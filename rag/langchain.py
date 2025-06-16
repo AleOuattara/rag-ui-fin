@@ -23,7 +23,22 @@ def read_config(file_path):
         print(f"Encoding error: {e}")
         return None
 
-config = read_config("secrets/config.yaml")
+import streamlit as st
+
+config = {
+    "embedding": {
+        "azure_endpoint": st.secrets["AZURE_ENDPOINT"],
+        "azure_deployment": st.secrets["EMBEDDING_DEPLOYMENT"],
+        "azure_api_version": st.secrets["AZURE_API_VERSION"],
+        "azure_api_key": st.secrets["OPENAI_API_KEY"],
+    },
+    "chat": {
+        "azure_endpoint": st.secrets["AZURE_ENDPOINT"],
+        "azure_deployment": st.secrets["CHAT_DEPLOYMENT"],
+        "azure_api_version": st.secrets["AZURE_API_VERSION"],
+        "azure_api_key": st.secrets["OPENAI_API_KEY"],
+    },
+}
 
 embedder = AzureOpenAIEmbeddings(
     azure_endpoint=config["embedding"]["azure_endpoint"],
