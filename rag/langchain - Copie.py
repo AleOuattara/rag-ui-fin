@@ -132,8 +132,9 @@ def get_vector_store_info():
         'nb_documents': len(documents)
     }
 
-def retrieve(question: str, k: int = 5):
-    return vector_store.similarity_search(question, k=k)
+def retrieve(question: str):
+    retrieved_docs = vector_store.similarity_search(question)
+    return retrieved_docs
 
 def build_qa_messages(question: str, context: str, lang: str = "en") -> list[str]:
     lang_instruction_map = {
@@ -160,8 +161,8 @@ Use three sentences maximum and keep the answer concise.
     ]
     return messages
 
-def answer_question(question: str, lang: str = "en", k: int = 5) -> str:
-    docs = retrieve(question, k=k)
+def answer_question(question: str, lang: str = "en") -> str:
+    docs = retrieve(question)
     docs_content = "\n\n".join(doc.page_content for doc in docs)
     messages = build_qa_messages(question, docs_content, lang=lang)
     response = llm.invoke(messages)
